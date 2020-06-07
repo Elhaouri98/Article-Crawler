@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import tkfontchooser as tkf
 import pymongo
+import os
 import ssl
 import dns
 
@@ -37,13 +38,15 @@ def OnDoubleClick(item):
 
 def show():
     d=0
+    if var1!=0:
+        os.system('cmd/c "scrapy crawl article"')
     keyword=text.get()
     results= collection.find({"$text": {"$search": keyword}})
     listBox.delete(*listBox.get_children())
 
     for i in results:
         d+=1
-        if d<200:
+        if d<100:
             listBox.insert("", "end", values=(i['author'], i['title'], i['link'], i['article']))
 
 
@@ -63,6 +66,8 @@ listBox.pack(side=tk.TOP,expand=True,fill=tk.BOTH)
 e1 = tk.Entry(m, textvariable=text, width=30).pack(side=tk.LEFT,expand=True,fill=tk.X)
 m.grid_columnconfigure(0, weight=1)
 showArticles = tk.Button(m, text="Show articles", width=15, command=show).pack(side=tk.LEFT)
+var1 = tk.IntVar()
+tk.Checkbutton(m, text="Refresh documents", variable=var1).pack(side=tk.BOTTOM)
 listBox.bind("<Double-1>", OnDoubleClick)
 
 m.mainloop()
