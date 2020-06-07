@@ -38,7 +38,7 @@ def OnDoubleClick(item):
 
 def show():
     d=0
-    if var1!=0:
+    if var1.get()==1:
         os.system('cmd/c "scrapy crawl article"')
     keyword=text.get()
     results= collection.find({"$text": {"$search": keyword}})
